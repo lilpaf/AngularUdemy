@@ -1,0 +1,16 @@
+<button class="btn btn-primary" (click)="onClickDisplayDetails()">Display details</button>
+<p *ngIf="displayDetails">{{details}}</p>
+<!-- <li 
+    *ngFor="let log of logs; let i = index"
+    [ngStyle]="{backgroundColor: getBackgroundColor(i)}"
+    [ngClass]="{'white-text': getTextColor(i)}"
+    >{{log}}
+</li> -->
+
+@for(log of logs; track i; let i = $index) {
+    <li 
+    [ngStyle]="{backgroundColor: getBackgroundColor(i)}"
+    [ngClass]="{'white-text': getTextColor(i)}"
+    >{{log}}</li>
+}
+
