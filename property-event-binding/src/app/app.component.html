@@ -15,3 +15,13 @@
     </div>
   </div>
 </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <app-game-control (countIncremented)="onCountIncremented($event)"></app-game-control>
+      <app-even [isEven]="isEven"></app-even>
+      <app-odd [isEven]="isEven"></app-odd>
+    </div>
+  </div>
+</div>

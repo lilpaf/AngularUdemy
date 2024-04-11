@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'property-event-binding';
+  isEven : boolean;
+
+  onCountIncremented(count : number) {
+    this.isEven = count % 2 === 0;
+  }
 }
