@@ -2,12 +2,12 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { LoggingService } from './logging.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class AccountService {
   statusUpdated = new EventEmitter<string>();
-  
-    constructor(private loggingService: LoggingService) {}
+
+  constructor(private loggingService: LoggingService) {}
 
   accounts = [
     {
