@@ -61,6 +61,7 @@
             >Invalid password input!</span
           >
         </div>
+        <p *ngIf="form.invalid && form.touched">The form is invalid!</p>
         <button
           class="btn btn-primary"
           type="submit"
