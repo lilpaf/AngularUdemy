@@ -11,10 +11,10 @@ export class AppComponent {
   subscriptions = ['Basic', 'Advanced', 'Pro'];
   submitted = false;
   user = {
-    email: '',
+    email: null,
     subscription: this.subscriptions[1],
-    password: ''
-  }
+    password: null,
+  };
 
   onSubmit() {
     console.log(this.submittedForm.form.value);
