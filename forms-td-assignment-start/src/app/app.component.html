@@ -13,7 +13,7 @@
            Upon submitting the form, you should simply print the Value of the Form to the Console.
            Optionally, display it in your template.
       -->
-      <form #form="ngForm">
+      <form #form="ngForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="email">Email</label>
           <input
@@ -62,12 +62,7 @@
           >
         </div>
         <p *ngIf="form.invalid && form.touched">The form is invalid!</p>
-        <button
-          class="btn btn-primary"
-          type="submit"
-          [disabled]="form.invalid"
-          (click)="onSubmit()"
-        >
+        <button class="btn btn-primary" type="submit" [disabled]="form.invalid">
           Submit
         </button>
       </form>
