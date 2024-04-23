@@ -18,8 +18,6 @@ export class AppComponent implements OnInit {
   signupForm: FormGroup;
   forbiddenUsernames = ['chris', 'anna'];
 
-  constructor(private formBuilder: FormBuilder) {}
-
   ngOnInit(): void {
     this.signupForm = new FormGroup({
       userData: new FormGroup({
@@ -40,10 +38,25 @@ export class AppComponent implements OnInit {
     this.signupForm.statusChanges.subscribe((value) => {
       console.log(value);
     });
+    this.signupForm.setValue({
+      userData: {
+        username: 'Max',
+        email: 'max@test.com',
+      },
+      gender: 'male',
+      hobbies: [],
+    });
+
+    this.signupForm.patchValue({
+      userData: {
+        username: 'anna',
+      },
+    });
   }
 
   onSubmit() {
     console.log(this.signupForm);
+    this.signupForm.reset();
   }
 
   onAddHobby() {
