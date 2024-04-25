@@ -1,42 +1,42 @@
 import { Component } from '@angular/core';
+import { Server } from './server.model';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   servers = [
-    {
-      instanceType: 'medium',
-      name: 'Production Server',
-      status: 'stable',
-      started: new Date(15, 1, 2017)
-    },
-    {
-      instanceType: 'large',
-      name: 'User Database',
-      status: 'stable',
-      started: new Date(15, 1, 2017)
-    },
-    {
-      instanceType: 'small',
-      name: 'Development Server',
-      status: 'offline',
-      started: new Date(15, 1, 2017)
-    },
-    {
-      instanceType: 'small',
-      name: 'Testing Environment Server',
-      status: 'stable',
-      started: new Date(15, 1, 2017)
-    }
+    new Server('medium', 'Production Server', 'stable', new Date(15, 1, 2017)),
+    new Server('large', 'User Database', 'stable', new Date(15, 1, 2017)),
+    new Server('small', 'Development Server', 'offline', new Date(15, 1, 2017)),
+    new Server(
+      'small',
+      'Testing Environment Server',
+      'stable',
+      new Date(15, 1, 2017)
+    ),
   ];
-  getStatusClasses(server: {instanceType: string, name: string, status: string, started: Date}) {
+
+  filteredStatus = '';
+
+  getStatusClasses(server: Server) {
     return {
       'list-group-item-success': server.status === 'stable',
       'list-group-item-warning': server.status === 'offline',
-      'list-group-item-danger': server.status === 'critical'
+      'list-group-item-danger': server.status === 'critical',
     };
+  }
+
+  onAddServer() {
+    this.servers.push(
+      new Server(
+        'small',
+        'New Server',
+        'stable',
+        new Date()
+      )
+    );
   }
 }
