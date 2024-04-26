@@ -19,6 +19,11 @@ export class AppComponent {
     ),
   ];
 
+  appStatus = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('stable');
+    }, 2000);
+  });
   filteredStatus = '';
 
   getStatusClasses(server: Server) {
@@ -30,13 +35,6 @@ export class AppComponent {
   }
 
   onAddServer() {
-    this.servers.push(
-      new Server(
-        'small',
-        'New Server',
-        'stable',
-        new Date()
-      )
-    );
+    this.servers.push(new Server('small', 'New Server', 'stable', new Date()));
   }
 }
