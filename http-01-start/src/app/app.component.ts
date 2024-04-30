@@ -1,64 +1,63 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription, map } from 'rxjs';
 import { PostModel } from './post.model';
+import { PostService } from './post.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  isFetching = false;
   loadedPosts: PostModel[] = [];
+  errorMessage: string | null = null;
+  subscription!: Subscription;
 
-  constructor(private http: HttpClient) {}
+  constructor(private postService: PostService) {}
 
   ngOnInit() {
+    this.subscription = this.postService.error.subscribe((errorMessage) => {
+      this.errorMessage = errorMessage;
+    });
     this.onFetchPosts();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onCreatePost(postData: PostModel) {
     // Send Http request
-    this.http
-      .post<{ name: string }>(
-        'https://ng-complete-guide-c1849-default-rtdb.europe-west1.firebasedatabase.app/posts.json',
-        postData
-      )
-      .subscribe((responseData) => {
-        console.log(responseData);
-      });
+    this.postService.createAndStorePost(postData.title, postData.content);
+    //this.postService
+    //  .createAndStorePost(postData.title, postData.content)
+    //  .subscribe({
+    //    next: () => this.onFetchPosts(),
+    //    error: (error: HttpErrorResponse) => (this.error = error.message),
+    //  });
   }
 
   onFetchPosts() {
     // Send Http request
-    this.fetchPosts();
+    this.isFetching = true;
+    this.postService.fetchPosts().subscribe({
+      next: (posts) => {
+        this.isFetching = false;
+        this.loadedPosts = posts;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.errorMessage = error.message;
+        console.log(error);
+      },
+    });
   }
 
   onClearPosts() {
     // Send Http request
-  }
-
-  private fetchPosts() {
-    this.http
-      .get<{ [key: string]: PostModel }>(
-        'https://ng-complete-guide-c1849-default-rtdb.europe-west1.firebasedatabase.app/posts.json'
-      )
-      .pipe(
-        map((responseData) => {
-          const postArray: PostModel[] = [];
-
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              postArray.push({ ...responseData[key], id: key });
-            }
-          }
-
-          return postArray;
-        })
-      )
-      .subscribe((posts) => {
-        console.log(posts);
-        this.loadedPosts = posts;
-      });
+    this.postService.deletePosts().subscribe(() => {
+      this.loadedPosts = [];
+    });
   }
 }
