@@ -48,6 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.loadedPosts = posts;
       },
       error: (error: HttpErrorResponse) => {
+        this.isFetching = false;
         this.errorMessage = error.message;
         console.log(error);
       },
@@ -59,5 +60,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.postService.deletePosts().subscribe(() => {
       this.loadedPosts = [];
     });
+  }
+
+  onHandleError() {
+    this.errorMessage = null;
   }
 }
